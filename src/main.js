@@ -2,8 +2,8 @@
  * Created by Aaron on 6/25/2016.
  */
 
-import {EventEmitter} from 'events';
-import {ok as assert} from 'assert';
+import {EventEmitter} from "events";
+import {ok as assert} from "assert";
 
 /*
  * For a single pair of events, this will create a Promise that will resolve or reject when the associated event occurs.
@@ -15,10 +15,10 @@ import {ok as assert} from 'assert';
 export function eventPromise( emitter, resolve_event = null, reject_event = null ) {
     assert( emitter instanceof EventEmitter );
 
-    if( reject_event == null || reject_event == void 0 ) {
+    if( reject_event === null || reject_event === void 0 ) {
         return makeResolvablePromise( emitter, resolve_event );
 
-    } else if( resolve_event == null || resolve_event == void 0 ) {
+    } else if( resolve_event === null || resolve_event === void 0 ) {
         return makeRejectablePromise( emitter, resolve_event );
 
     } else {
