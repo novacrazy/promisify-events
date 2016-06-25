@@ -24,8 +24,8 @@
  ****/
 "use strict";
 
-exports.__esModule      = true;
-exports.promisifyEvents = promisifyEvents;
+exports.__esModule = true;
+exports.default    = promisifyEvents;
 
 var _events = require( "events" );
 
@@ -35,9 +35,12 @@ var _assert = require( "assert" );
  * Although the generated code for all this is hideous, at least it's as fast as possible.
  * */
 
+//Just put this here to avoid any easy import mistakes
 /**
  * Created by Aaron on 6/25/2016.
  */
+
+promisifyEvents.promisifyEvents = promisifyEvents;
 
 function promisifyEvents( emitter, resolve_event, reject_event ) {
     (0, _assert.ok)( emitter instanceof _events.EventEmitter );
@@ -46,19 +49,33 @@ function promisifyEvents( emitter, resolve_event, reject_event ) {
     var rejectMany  = Array.isArray( reject_event );
 
     if( resolveMany || rejectMany ) {
-        if( resolveMany && rejectMany ) {
+        if( resolveMany && resolve_event.length < 2 ) {
+            resolveMany   = false;
+            resolve_event = resolve_event.length === 0 ? false : resolve_event[0];
+        }
+
+        if( rejectMany && reject_event.length < 2 ) {
+            rejectMany   = false;
+            reject_event = reject_event.length === 0 ? false : reject_event[0];
+        }
+    }
+
+    if( resolveMany || rejectMany ) {
+        if( resolveMany && rejectMany && resolve_event.length > 0 && reject_event.length > 0 ) {
             return makeMultiBothPromise( emitter, resolve_event, reject_event );
-        } else if( resolveMany ) {
+        } else if( resolveMany && resolve_event.length > 0 ) {
             return makeMultiResolvablePromise( emitter, resolve_event, reject_event );
-        } else {
+        } else if( rejectMany && reject_event.length > 0 ) {
             return makeMultiRejectablePromise( emitter, resolve_event, reject_event );
         }
-    } else if( !resolve_event ) {
+    } else if( !resolve_event && reject_event ) {
         return makeRejectablePromise( emitter, reject_event );
-    } else if( !reject_event ) {
+    } else if( !reject_event && resolve_event ) {
         return makeResolvablePromise( emitter, resolve_event );
-    } else {
+    } else if( reject_event && resolve_event ) {
         return makeBothPromise( emitter, resolve_event, reject_event );
+    } else {
+        throw new Error( "At least one event must be specified" );
     }
 }
 
@@ -112,7 +129,7 @@ function makeMultiResolvablePromise( emitter, resolve_events, reject_event ) {
         return new Promise( function( resolve, reject ) {
             function resolve_handler() {
                 for( var _iterator = resolve_events, _isArray = Array.isArray(
-                    _iterator ), _i                           = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ; ) {
+                    _iterator ), _i                           = 0, _iterator            = _isArray ? _iterator : _iterator[Symbol.iterator](); ; ) {
                     var _ref;
 
                     if( _isArray ) {
@@ -217,7 +234,7 @@ function makeMultiResolvablePromise( emitter, resolve_events, reject_event ) {
             }
 
             for( var _iterator5 = resolve_events, _isArray5 = Array.isArray(
-                _iterator5 ), _i5                           = 0, _iterator5           = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ; ) {
+                _iterator5 ), _i5                           = 0, _iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator](); ; ) {
                 var _ref5;
 
                 if( _isArray5 ) {
@@ -328,7 +345,7 @@ function makeMultiRejectablePromise( emitter, resolve_event, reject_events ) {
                 emitter.removeListener( resolve_event, resolve_handler );
 
                 for( var _iterator9 = reject_events, _isArray9 = Array.isArray(
-                    _iterator9 ), _i9                          = 0, _iterator9          = _isArray9 ? _iterator9 : _iterator9[Symbol.iterator](); ; ) {
+                    _iterator9 ), _i9                          = 0, _iterator9 = _isArray9 ? _iterator9 : _iterator9[Symbol.iterator](); ; ) {
                     var _ref9;
 
                     if( _isArray9 ) {
@@ -383,7 +400,7 @@ function makeMultiBothPromise( emitter, resolve_events, reject_events ) {
     return new Promise( function( resolve, reject ) {
         function resolve_handler() {
             for( var _iterator11 = reject_events, _isArray11 = Array.isArray(
-                _iterator11 ), _i11                          = 0, _iterator11 = _isArray11 ? _iterator11 : _iterator11[Symbol.iterator](); ; ) {
+                _iterator11 ), _i11                          = 0, _iterator11         = _isArray11 ? _iterator11 : _iterator11[Symbol.iterator](); ; ) {
                 var _ref11;
 
                 if( _isArray11 ) {
@@ -405,7 +422,7 @@ function makeMultiBothPromise( emitter, resolve_events, reject_events ) {
             }
 
             for( var _iterator12 = resolve_events, _isArray12 = Array.isArray(
-                _iterator12 ), _i12                           = 0, _iterator12          = _isArray12 ? _iterator12 : _iterator12[Symbol.iterator](); ; ) {
+                _iterator12 ), _i12                           = 0, _iterator12 = _isArray12 ? _iterator12 : _iterator12[Symbol.iterator](); ; ) {
                 var _ref12;
 
                 if( _isArray12 ) {
@@ -453,7 +470,7 @@ function makeMultiBothPromise( emitter, resolve_events, reject_events ) {
             }
 
             for( var _iterator14 = resolve_events, _isArray14 = Array.isArray(
-                _iterator14 ), _i14                           = 0, _iterator14          = _isArray14 ? _iterator14 : _iterator14[Symbol.iterator](); ; ) {
+                _iterator14 ), _i14                           = 0, _iterator14 = _isArray14 ? _iterator14 : _iterator14[Symbol.iterator](); ; ) {
                 var _ref14;
 
                 if( _isArray14 ) {
