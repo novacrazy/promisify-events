@@ -9,31 +9,49 @@ import {ok as assert} from "assert";
  * Although the generated code for all this is hideous, at least it's as fast as possible.
  * */
 
-export function promisifyEvents( emitter, resolve_event, reject_event ) {
+//Just put this here to avoid any easy import mistakes
+promisifyEvents.promisifyEvents = promisifyEvents;
+
+export default function promisifyEvents( emitter, resolve_event, reject_event ) {
     assert( emitter instanceof EventEmitter );
 
     let resolveMany = Array.isArray( resolve_event );
     let rejectMany  = Array.isArray( reject_event );
 
     if( resolveMany || rejectMany ) {
-        if( resolveMany && rejectMany ) {
+        if( resolveMany && resolve_event.length < 2 ) {
+            resolveMany   = false;
+            resolve_event = resolve_event.length === 0 ? false : resolve_event[0];
+        }
+
+        if( rejectMany && reject_event.length < 2 ) {
+            rejectMany   = false;
+            reject_event = reject_event.length === 0 ? false : reject_event[0];
+        }
+    }
+
+    if( resolveMany || rejectMany ) {
+        if( resolveMany && rejectMany && (resolve_event.length > 0 && reject_event.length > 0 ) ) {
             return makeMultiBothPromise( emitter, resolve_event, reject_event );
 
-        } else if( resolveMany ) {
+        } else if( resolveMany && resolve_event.length > 0 ) {
             return makeMultiResolvablePromise( emitter, resolve_event, reject_event );
 
-        } else {
+        } else if( rejectMany && reject_event.length > 0 ) {
             return makeMultiRejectablePromise( emitter, resolve_event, reject_event );
         }
 
-    } else if( !resolve_event ) {
+    } else if( !resolve_event && reject_event ) {
         return makeRejectablePromise( emitter, reject_event );
 
-    } else if( !reject_event ) {
+    } else if( !reject_event && resolve_event ) {
         return makeResolvablePromise( emitter, resolve_event );
 
-    } else {
+    } else if( reject_event && resolve_event ) {
         return makeBothPromise( emitter, resolve_event, reject_event );
+
+    } else {
+        throw new Error( "At least one event must be specified" );
     }
 }
 
