@@ -1,19 +1,19 @@
 {
-  "name":            "promisify-events",
-  "version":         "0.0.2",
-  "description":     "promisify-events listens to specified events on an EventEmitter and resolves or rejects a Promise from them.",
-  "main":            "index.js",
-  "keywords":        [
+  "name":        "promisify-events",
+  "version":     "0.0.3",
+  "description": "promisify-events listens to specified events on an EventEmitter and resolves or rejects a Promise from them.",
+  "main":        "index.js",
+  "keywords":    [
     "event",
     "promise"
   ],
-  "author":          "Aaron Trent <novacrazy@gmail.com>",
-  "license":         "MIT",
-  "repository":      {
+  "author":      "Aaron Trent <novacrazy@gmail.com>",
+  "license":     "MIT",
+  "repository":  {
     "type": "git",
     "url":  "https://github.com/novacrazy/promisify-events"
   },
-  "bugs":            {
+  "bugs":        {
     "url": "https://github.com/novacrazy/promisify-events/issues"
   },
   "devDependencies": {

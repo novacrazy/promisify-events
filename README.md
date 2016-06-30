@@ -13,7 +13,7 @@ EventEmitter and return a Promise instance that will be resolved or rejected bas
 # Quickstart
 ```javascript
 import {createServer} from 'http';
-import promisifyEvents from 'promisify-events';
+import {promisifyEvents} from 'promisify-events';
 
 let server = createServer(function(req, res) {
     res.end("Hello, World!");
@@ -30,7 +30,7 @@ or something like
 
 ```javascript
 //...
-import promisifyEvents from 'promisify-events';
+import {promisifyEvents} from 'promisify-events';
 import {createWriteStream} from 'fs';
 //...
 
