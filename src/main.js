@@ -5,10 +5,7 @@
 import {EventEmitter} from "events";
 import {ok as assert} from "assert";
 
-//Just put this here to avoid any easy import mistakes
-promisifyEvents.promisifyEvents = promisifyEvents;
-
-export default function promisifyEvents( emitter, resolve_events, reject_events ) {
+export function promisifyEvents( emitter, resolve_events, reject_events ) {
     assert( emitter instanceof EventEmitter );
 
     if( !Array.isArray( resolve_events ) ) {

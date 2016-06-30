@@ -24,19 +24,16 @@
  ****/
 "use strict";
 
-exports.__esModule = true;
-exports.default    = promisifyEvents;
+exports.__esModule      = true;
+exports.promisifyEvents = promisifyEvents;
 
 var _events = require( "events" );
 
 var _assert = require( "assert" );
 
-//Just put this here to avoid any easy import mistakes
 /**
  * Created by Aaron on 6/25/2016.
  */
-
-promisifyEvents.promisifyEvents = promisifyEvents;
 
 function promisifyEvents( emitter, resolve_events, reject_events ) {
     (0, _assert.ok)( emitter instanceof _events.EventEmitter );
