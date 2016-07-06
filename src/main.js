@@ -32,7 +32,7 @@ export function promisifyEvents( emitter, resolve_events, reject_events ) {
                 emitter.removeListener( event, resolve_handler );
             }
 
-            resolve( ...args );
+            resolve( args );
         }
 
         function reject_handler( ...args ) {
@@ -44,7 +44,7 @@ export function promisifyEvents( emitter, resolve_events, reject_events ) {
                 emitter.removeListener( event, resolve_handler );
             }
 
-            reject( ...args );
+            reject( args );
         }
 
         for( let event of resolve_events ) {
