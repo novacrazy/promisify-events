@@ -1,6 +1,6 @@
 {
   "name":        "promisify-events",
-  "version":     "0.0.3",
+  "version":     "1.0.0",
   "description": "promisify-events listens to specified events on an EventEmitter and resolves or rejects a Promise from them.",
   "main":        "index.js",
   "keywords":    [
