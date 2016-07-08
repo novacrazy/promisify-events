@@ -80,7 +80,7 @@ function promisifyEvents( emitter, resolve_events, reject_events ) {
             }
 
             for( var _iterator2 = resolve_events, _isArray2 = Array.isArray(
-                _iterator2 ), _i2                           = 0, _iterator2           = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ; ) {
+                _iterator2 ), _i2                           = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator](); ; ) {
                 var _ref2;
 
                 if( _isArray2 ) {
@@ -105,7 +105,11 @@ function promisifyEvents( emitter, resolve_events, reject_events ) {
                 args[_key] = arguments[_key];
             }
 
-            resolve( args );
+            if( args.length > 1 ) {
+                resolve( args );
+            } else {
+                resolve.apply( void 0, args );
+            }
         }
 
         function reject_handler() {
@@ -132,7 +136,7 @@ function promisifyEvents( emitter, resolve_events, reject_events ) {
             }
 
             for( var _iterator4 = resolve_events, _isArray4 = Array.isArray(
-                _iterator4 ), _i4                           = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ; ) {
+                _iterator4 ), _i4                           = 0, _iterator4           = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator](); ; ) {
                 var _ref4;
 
                 if( _isArray4 ) {
@@ -157,7 +161,11 @@ function promisifyEvents( emitter, resolve_events, reject_events ) {
                 args[_key2] = arguments[_key2];
             }
 
-            reject( args );
+            if( args.length > 1 ) {
+                reject( args );
+            } else {
+                reject.apply( void 0, args );
+            }
         }
 
         for( var _iterator5 = resolve_events, _isArray5 = Array.isArray( _iterator5 ), _i5 = 0, _iterator5 = _isArray5 ?

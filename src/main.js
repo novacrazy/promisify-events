@@ -32,7 +32,12 @@ export function promisifyEvents( emitter, resolve_events, reject_events ) {
                 emitter.removeListener( event, resolve_handler );
             }
 
-            resolve( args );
+            if( args.length > 1 ) {
+                resolve( args );
+
+            } else {
+                resolve( ...args );
+            }
         }
 
         function reject_handler( ...args ) {
@@ -44,7 +49,12 @@ export function promisifyEvents( emitter, resolve_events, reject_events ) {
                 emitter.removeListener( event, resolve_handler );
             }
 
-            reject( args );
+            if( args.length > 1 ) {
+                reject( args );
+
+            } else {
+                reject( ...args );
+            }
         }
 
         for( let event of resolve_events ) {
