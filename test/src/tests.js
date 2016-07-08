@@ -2,7 +2,7 @@
  * Created by Aaron on 7/1/2016.
  */
 
-import {strictEqual} from "assert";
+import {strictEqual, deepStrictEqual} from "assert";
 import {EventEmitter} from "events";
 import {promisifyEvents} from "../../";
 
@@ -17,12 +17,22 @@ describe( "Basic event handling", function() {
 
     it( "Should resolve on given event", function( done ) {
         promisifyEvents( emitter, 'good' ).then( value => {
-            strictEqual( value[0], 42 );
+            strictEqual( value, 42 );
 
             done();
         } ).catch( done );
 
         emitter.emit( 'good', 42 );
+    } );
+
+    it( "Should resolve on given event with multiple values as an array", function( done ) {
+        promisifyEvents( emitter, 'good0' ).then( values => {
+            deepStrictEqual( values, [42, 45] );
+
+            done();
+        } ).catch( done );
+
+        emitter.emit( 'good0', 42, 45 );
     } );
 
     it( "Should reject on given event", function( done ) {

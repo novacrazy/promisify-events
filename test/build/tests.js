@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function( obj ) {
     return typeof obj;
@@ -9,15 +9,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * Created by Aaron on 7/1/2016.
  */
 
-var _assert = require( 'assert' );
+var _assert = require( "assert" );
 
-var _events = require( 'events' );
+var _events = require( "events" );
 
-var _ = require( '../../' );
+var _ = require( "../../" );
 
 describe( "Existence", function() {
     it( "Should export the promisifyEvents function", function() {
-        (0, _assert.strictEqual)( typeof _.promisifyEvents === 'undefined' ? 'undefined' : _typeof( _.promisifyEvents ),
+        (0, _assert.strictEqual)( typeof _.promisifyEvents === "undefined" ? "undefined" : _typeof( _.promisifyEvents ),
             'function', 'promisifyEvents not exported as a function' );
     } );
 } );
@@ -27,12 +27,22 @@ describe( "Basic event handling", function() {
 
     it( "Should resolve on given event", function( done ) {
         (0, _.promisifyEvents)( emitter, 'good' ).then( function( value ) {
-            (0, _assert.strictEqual)( value[0], 42 );
+            (0, _assert.strictEqual)( value, 42 );
 
             done();
         } ).catch( done );
 
         emitter.emit( 'good', 42 );
+    } );
+
+    it( "Should resolve on given event with multiple values as an array", function( done ) {
+        (0, _.promisifyEvents)( emitter, 'good0' ).then( function( values ) {
+            (0, _assert.deepStrictEqual)( values, [42, 45] );
+
+            done();
+        } ).catch( done );
+
+        emitter.emit( 'good0', 42, 45 );
     } );
 
     it( "Should reject on given event", function( done ) {
