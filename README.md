@@ -58,6 +58,8 @@ promisifyEvents(someEmitter, ['success', 'end', 'done'], 'error').then(function(
 
 ##### `promisifyEvents(emitter: EventEmitter, resolve_events?: string|array<string>, reject_events?: string|array<string>) -> Promise<any>`
 
+If any of the events produce more than one value, they will be resolved as an array, since only one value can be resolved.
+
 # Support
 * [Github issues for bugs and feature requests](/issues)
 * Email me at [novacrazy@gmail.com](mailto://novacrazy@gmail.com) for help and advice.
